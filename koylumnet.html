@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Köylüm.net</title>
+<meta name="description" content="Köyden şehre sinyal götüren telekom operatörü — köylülere ve Kayserililere ömür boyu %50 indirim.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EAE2CE;
+    --bg-elevated:#F5EFE0;
+    --bg-band:#2B2015;
+    --ink:#2B2015;
+    --ink-muted:#6E5F47;
+    --ink-on-band:#EFE6D2;
+    --ink-on-band-muted:#C4B79A;
+    --line:rgba(43,32,21,0.16);
+    --line-on-band:rgba(239,230,210,0.18);
+    --accent:#1F6F5C;
+    --accent-ink:#F5EFE0;
+    --gold:#B87A20;
+    --gold-ink:#2B2015;
+    --rust:#A6432E;
+    --shadow:0 1px 2px rgba(43,32,21,0.06), 0 8px 24px -12px rgba(43,32,21,0.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17130F;
+      --bg-elevated:#211B14;
+      --bg-band:#0E0B08;
+      --ink:#EFE6D2;
+      --ink-muted:#B4A386;
+      --ink-on-band:#EFE6D2;
+      --ink-on-band-muted:#9C8E74;
+      --line:rgba(239,230,210,0.14);
+      --line-on-band:rgba(239,230,210,0.12);
+      --accent:#54BC9C;
+      --accent-ink:#0E211C;
+      --gold:#E0A13F;
+      --gold-ink:#241A08;
+      --rust:#D97C63;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17130F;
+    --bg-elevated:#211B14;
+    --bg-band:#0E0B08;
+    --ink:#EFE6D2;
+    --ink-muted:#B4A386;
+    --ink-on-band:#EFE6D2;
+    --ink-on-band-muted:#9C8E74;
+    --line:rgba(239,230,210,0.14);
+    --line-on-band:rgba(239,230,210,0.12);
+    --accent:#54BC9C;
+    --accent-ink:#0E211C;
+    --gold:#E0A13F;
+    --gold-ink:#241A08;
+    --rust:#D97C63;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;}
+  .signature{font-family:'Caveat', cursive;}
+
+  .wrap{max-width:1160px; margin:0 auto; padding-inline:clamp(20px,5vw,48px);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex; align-items:center; gap:0.6em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:1.5em; height:2px; background:var(--accent); display:inline-block;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:0.5em;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600; font-size:0.95rem;
+    padding:0.85em 1.5em;
+    border-radius:3px;
+    border:1px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:var(--accent-ink); box-shadow:var(--shadow);}
+  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:16px;
+  }
+  .brand{display:flex; align-items:center; gap:0.6em; text-decoration:none;}
+  .brand-mark{width:30px; height:30px; flex:none;}
+  .brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem; color:var(--ink);}
+  .brand-name em{font-style:normal; color:var(--accent);}
+  .nav-links{display:flex; gap:2em; list-style:none; margin:0; padding:0; font-size:0.92rem;}
+  .nav-links a{text-decoration:none; color:var(--ink-muted);}
+  .nav-links a:hover{color:var(--accent);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding-block:clamp(48px,8vw,88px) clamp(32px,6vw,56px);
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:clamp(24px,5vw,56px);
+    align-items:center;
+  }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr;} }
+  .hero h1{
+    font-size:clamp(2.4rem, 5.2vw, 4rem);
+    line-height:1.03;
+    margin-block:0.4em 0.35em;
+  }
+  .hero h1 .accent-word{color:var(--accent); font-style:italic; font-weight:500;}
+  .hero-sub{
+    font-size:1.08rem; color:var(--ink-muted); max-width:46ch; margin-bottom:1.8em;
+  }
+  .hero-cta{display:flex; gap:0.9em; flex-wrap:wrap; margin-bottom:2.2em;}
+  .hero-stats{display:flex; gap:clamp(20px,4vw,40px); flex-wrap:wrap;}
+  .stat b{
+    display:block; font-family:'IBM Plex Mono',monospace; font-size:1.5rem; font-weight:600;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat span{font-size:0.82rem; color:var(--ink-muted);}
+  .hero-art{width:100%; height:auto; border-radius:6px;}
+
+  section{padding-block:clamp(48px,7vw,84px);}
+  .section-head{max-width:60ch; margin-bottom:clamp(28px,5vw,44px);}
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem); margin-top:0.3em;}
+  .section-head p{color:var(--ink-muted); margin-top:0.7em; font-size:1.02rem;}
+
+  /* ---------- band sections ---------- */
+  .band{background:var(--bg-band); color:var(--ink-on-band);}
+  .band .section-head h2, .band h3{color:var(--ink-on-band);}
+  .band .section-head p, .band p{color:var(--ink-on-band-muted);}
+  .band .eyebrow{color:var(--gold);}
+  .band .eyebrow::before{background:var(--gold);}
+
+  /* founder */
+  .founder{
+    display:grid; grid-template-columns:220px 1fr; gap:clamp(24px,4vw,48px); align-items:start;
+  }
+  @media (max-width:700px){ .founder{grid-template-columns:1fr; } }
+  .founder-portrait{width:100%; max-width:220px; border-radius:6px; border:1px solid var(--line-on-band);}
+  .founder-quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:clamp(1.25rem,2.6vw,1.65rem); line-height:1.4;
+    color:var(--ink-on-band); margin-bottom:1em;
+  }
+  .founder-name{font-weight:600; color:var(--ink-on-band);}
+  .founder-role{font-size:0.85rem; color:var(--ink-on-band-muted); font-family:'IBM Plex Mono',monospace;}
+  .founder-sig{color:var(--gold); font-size:2.4rem; line-height:1; margin-top:0.5em; display:block;}
+
+  /* ---------- discount banner ---------- */
+  .discount{
+    background:var(--gold); color:var(--gold-ink);
+    border-radius:8px;
+    padding:clamp(24px,4vw,40px);
+    display:grid; grid-template-columns:auto 1fr auto; gap:clamp(20px,3vw,32px);
+    align-items:center;
+    box-shadow:var(--shadow);
+  }
+  @media (max-width:760px){ .discount{grid-template-columns:1fr;} }
+  .discount-badge{
+    font-family:'IBM Plex Mono',monospace; font-weight:600;
+    font-size:clamp(2.2rem,5vw,3.2rem); line-height:1;
+    white-space:nowrap;
+  }
+  .discount-badge span{display:block; font-size:0.32em; letter-spacing:0.08em; text-transform:uppercase; font-family:'IBM Plex Sans',sans-serif; margin-top:0.4em;}
+  .discount-copy h3{color:var(--gold-ink); font-size:1.3rem; margin-bottom:0.4em;}
+  .discount-copy p{color:var(--gold-ink); opacity:0.85; font-size:0.98rem; max-width:52ch;}
+  .discount-tags{display:flex; gap:0.6em; flex-wrap:wrap; margin-top:0.9em;}
+  .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem;
+    border:1px solid var(--gold-ink); border-radius:999px;
+    padding:0.3em 0.9em; opacity:0.9;
+  }
+
+  /* ---------- pricing ---------- */
+  .plans{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  @media (max-width:820px){ .plans{grid-template-columns:1fr;} }
+  .plan{
+    background:var(--bg-elevated);
+    padding:clamp(24px,3vw,32px);
+    display:flex; flex-direction:column; gap:1.1em;
+  }
+  .plan.featured{background:var(--bg-elevated); position:relative;}
+  .plan.featured::before{
+    content:"En çok tercih edilen";
+    position:absolute; top:0; right:0;
+    background:var(--accent); color:var(--accent-ink);
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.04em;
+    padding:0.4em 0.8em; border-bottom-left-radius:6px;
+  }
+  .plan-name{font-family:'Fraunces',serif; font-size:1.35rem; font-weight:600;}
+  .plan-desc{font-size:0.9rem; color:var(--ink-muted);}
+  .plan-price{display:flex; align-items:baseline; gap:0.5em; flex-wrap:wrap;}
+  .price-old{
+    font-family:'IBM Plex Mono',monospace; text-decoration:line-through;
+    color:var(--ink-muted); font-size:1rem;
+  }
+  .price-new{
+    font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--accent);
+    font-size:2rem; font-variant-numeric:tabular-nums;
+  }
+  .price-unit{font-size:0.85rem; color:var(--ink-muted);}
+  .plan-features{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.55em; font-size:0.92rem;}
+  .plan-features li{display:flex; gap:0.6em; align-items:baseline;}
+  .plan-features li::before{content:"—"; color:var(--accent); flex:none;}
+  .plan .btn{margin-top:auto; justify-content:center;}
+  .plan-note{
+    font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--gold);
+    border-top:1px dashed var(--line); padding-top:0.8em;
+  }
+
+  /* ---------- coverage ---------- */
+  .coverage-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:clamp(24px,4vw,48px); align-items:center;
+  }
+  @media (max-width:900px){ .coverage-grid{grid-template-columns:1fr;} }
+  .district-list{display:grid; grid-template-columns:repeat(2,1fr); gap:0.5em 1.5em; margin-top:1.2em;}
+  .district-list div{
+    font-size:0.92rem; display:flex; align-items:center; gap:0.6em;
+    border-bottom:1px solid var(--line); padding-block:0.5em;
+  }
+  .district-list div::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none;}
+
+  /* ---------- why us ---------- */
+  .features{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  @media (max-width:820px){ .features{grid-template-columns:1fr;} }
+  .feature{background:var(--bg-elevated); padding:clamp(22px,3vw,28px); display:flex; flex-direction:column; gap:0.7em;}
+  .feature-icon{width:34px; height:34px; color:var(--accent);}
+  .feature h3{font-size:1.1rem;}
+  .feature p{font-size:0.92rem; color:var(--ink-muted);}
+
+  /* ---------- footer / cta ---------- */
+  .cta-band{
+    background:var(--bg-band); color:var(--ink-on-band);
+    text-align:left;
+  }
+  .cta-inner{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;}
+  .cta-inner h2{color:var(--ink-on-band); font-size:clamp(1.6rem,3.4vw,2.2rem); max-width:20ch;}
+
+  footer{background:var(--bg-band); color:var(--ink-on-band-muted); border-top:1px solid var(--line-on-band);}
+  .footer-grid{
+    display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px;
+    padding-block:44px 28px; font-size:0.9rem;
+  }
+  @media (max-width:760px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  .footer-grid h4{
+    font-family:'IBM Plex Mono',monospace; font-size:0.76rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-on-band); margin-bottom:0.9em;
+  }
+  .footer-grid ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.55em;}
+  .footer-grid a{text-decoration:none;}
+  .footer-grid a:hover{color:var(--gold);}
+  .footer-bottom{
+    border-top:1px solid var(--line-on-band);
+    padding-block:18px; font-size:0.8rem;
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 24L10 13L15 20L20 9L28 24" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M20 9C20 9 22 6 24.5 6C27 6 28 8.2 28 10" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">Köylüm<em>.net</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hikaye">Hikayemiz</a></li>
+      <li><a href="#indirim">%50 İndirim</a></li>
+      <li><a href="#paketler">Paketler</a></li>
+      <li><a href="#kapsama">Kapsama Alanı</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#paketler">Paket Seç</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Toprağın olduğu her yerde telekom</p>
+      <h1>Sinyal artık<br><span class="accent-word">köyün de</span> hakkı.</h1>
+      <p class="hero-sub">Köylüm.net; tarlada, bağda, yaylada ve mahallede aynı çekim gücünü sunan mobil hat, fiber internet ve sabit hat operatörüdür. Kurucumuz İsmail Sarı'nın imzasıyla, köylülere ve Kayserililere ömür boyu <strong>%50 indirim</strong> garantili.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#paketler">Paketleri incele</a>
+        <a class="btn btn-ghost" href="#indirim">%50 indirimi öğren</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b class="mono">81</b><span>ilde baz istasyonu</span></div>
+        <div class="stat"><b class="mono">%50</b><span>köylü &amp; Kayseri indirimi</span></div>
+        <div class="stat"><b class="mono">7/24</b><span>muhtarlık hattı desteği</span></div>
+      </div>
+    </div>
+
+    <svg class="hero-art" viewBox="0 0 520 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Köy manzarası üzerinde sinyal kulesi ve Erciyes silüeti">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--accent)" stop-opacity="0.16"/>
+          <stop offset="1" stop-color="var(--accent)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width="520" height="460" rx="10" fill="var(--bg-elevated)"/>
+      <rect width="520" height="460" rx="10" fill="url(#sky)"/>
+      <!-- Erciyes silhouette -->
+      <path d="M60 260 L200 90 L250 150 L300 70 L470 260 Z" fill="var(--ink)" opacity="0.08"/>
+      <!-- hills -->
+      <path d="M0 300 C90 260 160 320 260 290 C360 260 420 310 520 280 L520 460 L0 460 Z" fill="var(--ink)" opacity="0.14"/>
+      <path d="M0 340 C110 310 180 360 280 335 C380 310 440 350 520 330 L520 460 L0 460 Z" fill="var(--ink)" opacity="0.22"/>
+      <!-- wheat field lines -->
+      <g stroke="var(--gold)" stroke-width="2" stroke-linecap="round" opacity="0.55">
+        <path d="M60 420 L60 380"/><path d="M80 424 L80 378"/><path d="M100 420 L100 382"/>
+        <path d="M120 426 L120 380"/><path d="M140 420 L140 384"/><path d="M160 424 L160 380"/>
+        <path d="M180 420 L180 382"/><path d="M200 426 L200 378"/><path d="M220 420 L220 384"/>
+      </g>
+      <g fill="var(--gold)" opacity="0.7">
+        <circle cx="60" cy="376" r="3"/><circle cx="80" cy="374" r="3"/><circle cx="100" cy="378" r="3"/>
+        <circle cx="120" cy="376" r="3"/><circle cx="140" cy="380" r="3"/><circle cx="160" cy="376" r="3"/>
+        <circle cx="180" cy="378" r="3"/><circle cx="200" cy="374" r="3"/><circle cx="220" cy="380" r="3"/>
+      </g>
+      <!-- signal tower -->
+      <g>
+        <path d="M400 420 L380 200 L420 200 L400 420 Z" fill="none" stroke="var(--ink)" stroke-width="2.5" opacity="0.75"/>
+        <path d="M386 260 L414 260 M390 320 L410 320 M393 370 L407 370" stroke="var(--ink)" stroke-width="2" opacity="0.55"/>
+        <path d="M400 200 L400 170" stroke="var(--ink)" stroke-width="2.5" opacity="0.75"/>
+        <path d="M368 160 A46 46 0 0 1 432 160" stroke="var(--accent)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M378 172 A30 30 0 0 1 422 172" stroke="var(--accent)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="400" cy="168" r="4" fill="var(--rust)"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- STORY / FOUNDER -->
+  <section class="band" id="hikaye">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Marka hikayesi</p>
+        <h2>Bir telefon direğinden bir operatöre.</h2>
+        <p>Köylüm.net, şehir merkezlerinde biten kapsama haritalarının köylerde de devam etmesi gerektiği fikriyle kuruldu. Bugün tarladan tapuya, muhtarlıktan pazar yerine kadar her işi tek hatla halledebiliyorsunuz.</p>
+      </div>
+
+      <div class="founder">
+        <svg class="founder-portrait" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="İsmail Sarı'yı temsil eden stilize illüstrasyon">
+          <rect width="220" height="260" fill="var(--bg-elevated)"/>
+          <circle cx="110" cy="98" r="52" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+          <path d="M60 220 C60 165 82 148 110 148 C138 148 160 165 160 220" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+          <path d="M78 82 C78 60 96 48 110 48 C124 48 142 60 142 82 C142 100 140 112 110 112 C80 112 78 100 78 82 Z" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+          <path d="M92 200 L128 200" stroke="var(--rust)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <p class="founder-quote">"Bizim köyde çekim yoktu diye ineğin adını internetten koyamadık. Köylüm.net'i, hiçbir tarlanın sinyalsiz kalmaması için kurdum."</p>
+          <p class="founder-name">İsmail Sarı</p>
+          <p class="founder-role">KURUCU &amp; GENEL MÜDÜR</p>
+          <span class="founder-sig signature">İsmail Sarı</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCOUNT -->
+  <section id="indirim">
+    <div class="wrap">
+      <div class="discount">
+        <div class="discount-badge">%50<span>indirim</span></div>
+        <div class="discount-copy">
+          <h3>Köylülere ve Kayserililere ömür boyu %50.</h3>
+          <p>Nüfus kaydı köy veya beldede olanlar ile Kayseri il sınırları içinde ikamet edenler, tüm mobil ve fiber paketlerinde kalıcı %50 indirimden faydalanır. Tek seferlik değil — hattınız açık olduğu sürece geçerlidir.</p>
+          <div class="discount-tags">
+            <span class="tag">Köy / belde nüfus kaydı</span>
+            <span class="tag">Kayseri il sınırı ikametgahı</span>
+            <span class="tag">Başvuru: e-Devlet ile anında</span>
+          </div>
+        </div>
+        <a class="btn btn-ghost" href="#paketler" style="border-color:var(--gold-ink); color:var(--gold-ink);">İndirimli paketleri gör</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="paketler">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Paketler</p>
+        <h2>Tarlaya da, apartmana da yeter.</h2>
+        <p>Fiyatlar standart tarifedir. Köylü ve Kayserili aboneler için %50 indirim otomatik uygulanır.</p>
+      </div>
+
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-name">Filiz</div>
+          <p class="plan-desc">Başlangıç mobil hattı</p>
+          <div class="plan-price">
+            <span class="price-old">249₺</span>
+            <span class="price-new">124,50₺</span>
+            <span class="price-unit">/ ay</span>
+          </div>
+          <ul class="plan-features">
+            <li>10 GB internet</li>
+            <li>500 dakika, 1000 SMS</li>
+            <li>Muhtarlık &amp; tarım hattı ücretsiz arama</li>
+            <li>Baz istasyonu önceliği: standart</li>
+          </ul>
+          <a class="btn btn-ghost" href="#iletisim">Bu paketi seç</a>
+          <p class="plan-note">Köylü / Kayserili fiyatı gösterilmiştir</p>
+        </div>
+
+        <div class="plan featured">
+          <div class="plan-name">Fidan</div>
+          <p class="plan-desc">Mobil + ev interneti</p>
+          <div class="plan-price">
+            <span class="price-old">399₺</span>
+            <span class="price-new">199,50₺</span>
+            <span class="price-unit">/ ay</span>
+          </div>
+          <ul class="plan-features">
+            <li>30 GB internet + sınırsız dk/SMS</li>
+            <li>50 Mbps fiber ev interneti</li>
+            <li>Traktör GPS &amp; IoT SIM dahil</li>
+            <li>Baz istasyonu önceliği: yüksek</li>
+          </ul>
+          <a class="btn btn-primary" href="#iletisim">Bu paketi seç</a>
+          <p class="plan-note">Köylü / Kayserili fiyatı gösterilmiştir</p>
+        </div>
+
+        <div class="plan">
+          <div class="plan-name">Hasat</div>
+          <p class="plan-desc">Premium sınırsız paket</p>
+          <div class="plan-price">
+            <span class="price-old">599₺</span>
+            <span class="price-new">299,50₺</span>
+            <span class="price-unit">/ ay</span>
+          </div>
+          <ul class="plan-features">
+            <li>Sınırsız internet, dakika, SMS</li>
+            <li>100 Mbps fiber + yedek hat</li>
+            <li>Pastırma kargo indirimi (anlaşmalı esnaf)</li>
+            <li>Baz istasyonu önceliği: garantili</li>
+          </ul>
+          <a class="btn btn-ghost" href="#iletisim">Bu paketi seç</a>
+          <p class="plan-note">Köylü / Kayserili fiyatı gösterilmiştir</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COVERAGE -->
+  <section class="band" id="kapsama">
+    <div class="wrap coverage-grid">
+      <div>
+        <p class="eyebrow">Kapsama alanı</p>
+        <h2>Kayseri'de her ilçede güçlü çekim.</h2>
+        <p style="margin-top:0.8em; max-width:52ch;">İndirim kampanyamızın kalbi olan Kayseri'de, merkez ilçelerden yaylalara kadar kesintisiz kapsama sağlıyoruz. Diğer 80 ilde de köy ve beldeler öncelikli yatırım listemizde.</p>
+        <div class="district-list">
+          <div>Melikgazi</div><div>Kocasinan</div>
+          <div>Talas</div><div>Develi</div>
+          <div>Yahyalı</div><div>İncesu</div>
+          <div>Bünyan</div><div>Sarıoğlan</div>
+          <div>Pınarbaşı</div><div>Sarız</div>
+        </div>
+      </div>
+      <svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kayseri il sınırı içinde sinyal noktalarını gösteren şematik harita">
+        <rect width="380" height="320" rx="8" fill="var(--bg)" opacity="0.5"/>
+        <path d="M40 60 L200 30 L340 80 L320 220 L180 280 L60 240 Z" fill="none" stroke="var(--line-on-band)" stroke-width="2"/>
+        <g fill="var(--gold)">
+          <circle cx="200" cy="150" r="6"/>
+          <circle cx="130" cy="100" r="4"/>
+          <circle cx="260" cy="110" r="4"/>
+          <circle cx="150" cy="200" r="4"/>
+          <circle cx="270" cy="190" r="4"/>
+          <circle cx="90" cy="170" r="4"/>
+          <circle cx="230" cy="230" r="4"/>
+        </g>
+        <text x="200" y="150" fill="var(--ink-on-band)" font-family="IBM Plex Mono, monospace" font-size="11" text-anchor="middle" dy="-14">Merkez</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Neden Köylüm.net</p>
+        <h2>Şehir operatörlerinin unuttuğu yerde başlıyoruz.</h2>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none"><path d="M4 20L9 10L13 16L17 6L21 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Tarlada da tam çekim</h3>
+          <p>Yerleşim dışı baz istasyonu planlamasını, ekili alan ve yayla güzergahlarına göre önceliklendiriyoruz.</p>
+        </div>
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3v6M12 21v-6M4.2 7.8l4.2 2.4M15.6 13.8l4.2 2.4M4.2 16.2l4.2-2.4M15.6 10.2l4.2-2.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <h3>Fatura yerine defter usulü</h3>
+          <p>İsterseniz aylık fatura, isterseniz hasat sonrası ödeme planı — muhtarınızla aynı esneklikte çalışıyoruz.</p>
+        </div>
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <h3>Arıza anında müdahale</h3>
+          <p>Köy ve beldelerde ortalama müdahale süresi 4 saat — şehir merkezinde ise 2 saatin altında.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <h2>Hattınızı bugün taşıyın, indiriminiz yarın hesabınızda.</h2>
+      <a class="btn btn-primary" href="#iletisim">Hemen başvur</a>
+    </div>
+  </section>
+
+</main>
+
+<footer id="iletisim">
+  <div class="wrap footer-grid">
+    <div>
+      <span class="brand-name" style="color:var(--ink-on-band);">Köylüm<em style="color:var(--gold);">.net</em></span>
+      <p style="margin-top:0.8em; max-width:32ch; font-size:0.9rem;">Erciyes Teknokent, Melikgazi / Kayseri. Kurucu: İsmail Sarı.</p>
+    </div>
+    <div>
+      <h4>İletişim</h4>
+      <ul>
+        <li><a href="tel:08501234567" class="mono">0850 123 45 67</a></li>
+        <li><a href="mailto:merhaba@koylum.net">merhaba@koylum.net</a></li>
+        <li>7/24 muhtarlık hattı</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kurumsal</h4>
+      <ul>
+        <li><a href="#hikaye">Hikayemiz</a></li>
+        <li><a href="#kapsama">Kapsama alanı</a></li>
+        <li>Bayilik başvurusu</li>
+      </ul>
+    </div>
+    <div>
+      <h4>İndirim</h4>
+      <ul>
+        <li><a href="#indirim">%50 köylü indirimi</a></li>
+        <li><a href="#indirim">%50 Kayseri indirimi</a></li>
+        <li><a href="#paketler">Tüm paketler</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Köylüm.net — İsmail Sarı Telekomünikasyon A.Ş.</span>
+    <span>Fiyatlara KDV dahildir. Kampanya örnek amaçlıdır.</span>
+  </div>
+</footer>
+
+</body>
+</html>
